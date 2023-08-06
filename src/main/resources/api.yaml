@@ -1,0 +1,60 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Route app
+
+paths:
+  /routing/{source}/{target}:
+    get:
+      summary: Route between two countries
+      operationId: route
+      tags:
+        - route
+      parameters:
+        - name: source
+          in: path
+          required: true
+          description: source
+          schema:
+            type: string
+        - name: target
+          in: path
+          required: true
+          description: target
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteResponse"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    RouteResponse:
+      type: object
+      required:
+        - route
+      properties:
+        route:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
